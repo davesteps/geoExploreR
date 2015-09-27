@@ -37,7 +37,7 @@ shinyUI(
                                                   width='auto',
                                                   height='auto',
                                                   # hr(),
-                                                  a(icon('github fa-2x'),href='https://github.com/davesteps/sst',target='_blank'),
+                                                  a(icon('github fa-2x'),href='https://github.com/davesteps/geoExploreR',target='_blank'),
                                                   a(icon('twitter fa-2x'),href='https://twitter.com/davesteps',target='_blank')
                                     )                  
                   

@@ -6,7 +6,7 @@
 ##  - factor varialbes in color
 ##  - scale transforms
 ##  - choose plot type
-##  - 
+##  - map point info overlay
 ##
 ######################################
 # 
