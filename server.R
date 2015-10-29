@@ -54,9 +54,11 @@ function(input, output,session) {
   output$yvar <- renderUI(selectInput('yvar',label='y Var',choices = names(df),selected = names(df)[2]))
   output$cvar <- renderUI(selectInput('color',label='Color Var',choices = names(df),selected =  names(df)[1]))
   
+  xvar_ <- ''
   xVar <- reactive({
     print('xVar')
     if(is.null(input$xvar)) return(names(df)[1])
+    xvar_ <<- input$xvar
     input$xvar})
   yVar <- reactive({
     if(is.null(input$yvar)) return(names(df)[2])
@@ -77,6 +79,7 @@ function(input, output,session) {
   
   
   colorData <- reactive({
+    print(names(input))
     print('colData')
     df1 <- isolate(df@data)
     df1[,colorVar()]})
@@ -98,6 +101,8 @@ function(input, output,session) {
       )
     
   })
+  
+
   
   observe({
     print('legend')
@@ -125,25 +130,37 @@ function(input, output,session) {
   })
   
 
-  
-  
   tooltip <- function(x) {
-    print('tooltip')
     ggvisHover <<- x
     if(is.null(x)) return(NULL)
-    paste0(names(x)[1:2], ": ", format(x[1:2]), collapse = "<br/>")
+    tt<<-paste0(c(xVar(),yVar()), ": ", format(x[1:2]), collapse = "<br/>")
+    leafletProxy('map') %>%addControl(tt,layerId = 'tt',position = 'bottomleft')
+    tt
   }
+  
+  
+
+  
   
   ggvisHover <- NULL
   makeReactiveBinding('ggvisHover')
-  
-  
   i.active <- NULL
   makeReactiveBinding('i.active')
+
   
-  
+  observeEvent(ggvisHover,{
+    h <- ggvisHover[1:2]
+    i.active <<- ggvisdf()[,'x']==h[[1]]&ggvisdf()[,'y']==h[[2]]
+  })
+
+  observeEvent(input$map_marker_mouseover,{
+    id <- as.numeric(input$map_marker_mouseover$id)
+    if(!is.na(id)){
+      i.active <<- id
+    }
+  })
+
   observeEvent(i.active,{
-    print('mapupdate')
     leafletProxy('map') %>%
       # removeMarker('hover') %>%
       addCircleMarkers(lat=coords()[i.active,2],opacity = 1,
@@ -151,30 +168,17 @@ function(input, output,session) {
                        radius = (input$size/5),
                        lng=coords()[i.active,1],
                        layerId = 'hover',weight = 6,
-                       color = 'red')
-  })
-  
-  observeEvent(ggvisHover,{
-    print('ggvisHover')
-    i.active <<- NULL
-    h <- ggvisHover[1:2]
-    i.active <<- ggvisdf()[,'x']==h[[1]]&ggvisdf()[,'y']==h[[2]]
-  })
-  
-  observeEvent(input$map_marker_mouseover,{
-    print('map mouse over')
-    id <- as.numeric(input$map_marker_mouseover$id)
-    if(!is.na(id)){
-      i.active <<- id
-    }
+                       color = 'red') 
   })
   
   mouseOver <- reactive({
-    print('mouseOver')
-    # if(is.null(i.active)) return(ggvisdf()[1,c('x','y')])
-    ggvisdf()[i.active,c('x','y')]
+
+    p <- ggvisdf()[i.active,c('x','y')]
+    if(class(i.active)=='numeric'){tooltip(p)}
+    p
   })
   
+    
 
   
   ggvisdf %>% 
@@ -192,13 +196,13 @@ function(input, output,session) {
     ggvis(~x) %>%
     set_options(width = "auto", height = "auto", resizable=FALSE) %>%    
     add_axis("y", title = '')  %>% 
-    layer_densities(fill := '#000044') %>% 
+    layer_densities(fill := '#000054') %>% 
     layer_points(data =mouseOver,stroke:='red',size := 10) %>%
     bind_shiny("p2")
   
   ggvisdf %>% 
     ggvis(~y) %>%
-    layer_densities(fill := '#000044') %>% 
+    layer_densities(fill := '#000054') %>% 
     set_options(width = "auto", height = "auto", resizable=FALSE) %>%    
     add_axis("y", title = '')  %>% 
     layer_points(data =mouseOver,stroke:='red',size := 10) %>%

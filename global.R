@@ -8,6 +8,7 @@ library(RColorBrewer)
 require(raster)
 require(gstat)
 require(rgdal)
+require(Cairo)
 
 
 data(meuse)

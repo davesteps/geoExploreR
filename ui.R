@@ -10,6 +10,7 @@
 shinyUI(  
   dashboardPage(skin = 'green',
                 
+                
                 dashboardHeader(title = HTML(paste(icon('globe'),'geoExploreR'))
                                 # a(icon('github fa-2x'),href='https://github.com/davesteps/homebrewR'),
                                 # a(icon('twitter fa-2x'),href='https://twitter.com/davesteps')
@@ -30,16 +31,36 @@ shinyUI(
                               rownames(subset(brewer.pal.info, category %in% c("seq", "div")))),
                   uiOutput("ui"),
                   
-                                    absolutePanel(
-                                                  bottom = 10,
-                                                  left = 10,
-                                                  draggable = F,
-                                                  width='auto',
-                                                  height='auto',
-                                                  # hr(),
-                                                  a(icon('github fa-2x'),href='https://github.com/davesteps/geoExploreR',target='_blank'),
-                                                  a(icon('twitter fa-2x'),href='https://twitter.com/davesteps',target='_blank')
-                                    )                  
+                  absolutePanel(
+                    bottom = 10,
+                    left = 10,
+                    draggable = F,
+                    width='100%',
+                    height='auto',
+                    p(a(icon('github fa-2x'),href='https://github.com/davesteps/geoExploreR',target='_blank')),
+                    HTML("<div style='float:center'>
+                  <a href='https://twitter.com/share' 
+                                                       class='twitter-share-button' 
+                                                       align='middle' 
+                                                       data-url='davesteps.com/geoExploreR/' 
+                                                       data-text='created by @davesteps: davesteps.com/geoExploreR/' 
+                                                       data-size='large'>Tweet
+                                                       </a>
+                                                       <script>!function(d,s,id){
+                                                       var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                                                       if(!d.getElementById(id)){
+                                                       js=d.createElement(s);
+                                                       js.id=id;
+                                                       js.src=p+'://platform.twitter.com/widgets.js';
+                                                       fjs.parentNode.insertBefore(js,fjs);
+                                                       }
+                                                       }(document, 'script', 'twitter-wjs');
+                                                       </script>
+                                                       </div>")
+                    
+                    # a(icon('github fa-2x'),href='https://github.com/davesteps/geoExploreR',target='_blank')
+                    # a(icon('twitter fa-2x'),href='https://twitter.com/davesteps',target='_blank')
+                  )                  
                   
                 ),
                 dashboardBody(
@@ -65,7 +86,7 @@ shinyUI(
                   #                             ),
                   #                             
                   box(width = 6,status = 'warning',
-                      div(style = "height: 400px;",
+                      div(style = "height: 450px;",
                           ggvisOutput("p")),
                       fluidRow(
                         column(width=6,
@@ -79,7 +100,7 @@ shinyUI(
                   ),                  
                   
                   box(width = 6,status = 'warning',
-                      leafletOutput("map",height = 600)
+                      leafletOutput("map",height = 650)
                   )
                   
                   
@@ -87,7 +108,7 @@ shinyUI(
                   # )
                   # ),
                   #                   
-
+                  
                 )
   )
 )
