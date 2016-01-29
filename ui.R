@@ -7,14 +7,19 @@
 
 
 
-shinyUI(  
-  dashboardPage(skin = 'green',
+shinyUI(
+  bootstrapPage(tags$head(includeScript("google-analytics.js")),
+                
+  dashboardPage(#tags$head(includeScript()),
+                skin = 'green',
                 
                 
                 dashboardHeader(title = HTML(paste(icon('globe'),'geoExploreR'))
+                                
                                 # a(icon('github fa-2x'),href='https://github.com/davesteps/homebrewR'),
                                 # a(icon('twitter fa-2x'),href='https://twitter.com/davesteps')
                 ),
+                
                 dashboardSidebar(
                   
                   selectInput('dataset',label = 'Dataset',
@@ -43,7 +48,7 @@ shinyUI(
                                                        class='twitter-share-button' 
                                                        align='middle' 
                                                        data-url='davesteps.com/geoExploreR/' 
-                                                       data-text='created by @davesteps: davesteps.com/geoExploreR/' 
+                                                       data-text='created by @davesteps using #rstats and #shiny: davesteps.com/geoExploreR/' 
                                                        data-size='large'>Tweet
                                                        </a>
                                                        <script>!function(d,s,id){
@@ -64,6 +69,7 @@ shinyUI(
                   
                 ),
                 dashboardBody(
+                  
                   # tabItems(
                   # tabItem("dash",
                   
@@ -105,10 +111,8 @@ shinyUI(
                   
                   
                   
-                  # )
-                  # ),
-                  #                   
                   
                 )
   )
+)
 )
