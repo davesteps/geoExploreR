@@ -1,8 +1,8 @@
 name: geoExploreR
 account: davesteps
 server: shinyapps.io
-bundleId: 309451
-url: https://davesteps.shinyapps.io/geoExploreR
-when: 1447363011.74818
+bundleId: 361561
+url: https://davesteps.shinyapps.io/geoExploreR/
+when: 1454091594.94873
 asMultiple: FALSE
 asStatic: FALSE
